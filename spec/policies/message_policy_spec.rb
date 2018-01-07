@@ -7,8 +7,8 @@ RSpec.describe MessagePolicy do
   let(:user) { FactoryGirl.create(:user, email: 'user') }
   let(:dgfip_user) { FactoryGirl.create(:user, provider: 'dgfip', email: 'dgfip') }
   let(:france_connect_user) { FactoryGirl.create(:user, provider: 'france_connect', email: 'france_connect') }
-  let(:enrollment) { FactoryGirl.create(:enrollment) }
-  let(:message) { FactoryGirl.create(:message, enrollment: enrollment) }
+  let(:subscription) { FactoryGirl.create(:subscription) }
+  let(:message) { FactoryGirl.create(:message, subscription: subscription) }
 
   permissions :create? do
     it 'deny access with no user' do
@@ -22,9 +22,9 @@ RSpec.describe MessagePolicy do
 
   permissions :update? do
     it 'no one can update a message' do
-      expect(subject).not_to permit(user, enrollment)
-      expect(subject).not_to permit(dgfip_user, enrollment)
-      expect(subject).not_to permit(france_connect_user, enrollment)
+      expect(subject).not_to permit(user, subscription)
+      expect(subject).not_to permit(dgfip_user, subscription)
+      expect(subject).not_to permit(france_connect_user, subscription)
     end
   end
 end

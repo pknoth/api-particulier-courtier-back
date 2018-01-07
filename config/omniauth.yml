@@ -17,8 +17,8 @@ docker:
     site: http://oauth:3001
     authorize_url: /oauth/authorize
     me_url: /api/v1/me
-  client_id: f6feea577e55543877f555e35be37a3930ea37c53eec0d5bfb58ea0e80048762
-  client_secret: 2708a12e758090862cde983d513f066a31225cd079620a8cffff24d6b9df5223
+  client_id: c30e154559c4844aa96859c8f5c0a81ede618562566d53d5a1f1a73d645a3304
+  client_secret: 4c2655142fd010b56e51dd1cfbde7ed1196ae46bc36accff173bfaf7a2a3ba9e
 production:
   client_options:
     site: https://84.39.49.146

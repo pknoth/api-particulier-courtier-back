@@ -2,7 +2,6 @@
 
 class MessagesController < ApplicationController
   before_action :authenticate!
-  before_action :set_enrollment
   before_action :set_message, only: %i[show update destroy]
 
   # GET /messages
@@ -19,8 +18,7 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    @message = Message.new(message_params)
-    @message.enrollment = @enrollment
+    @message = messages_scope.first_or_initialize
 
     if @message.save
       current_user.add_role(:sender, @message)
@@ -42,14 +40,10 @@ class MessagesController < ApplicationController
 
   private
 
-  def set_enrollment
-    @enrollment = Enrollment.find(params[:enrollment_id])
-  end
-
   def messages_scope
     MessagePolicy::Scope
       .new(current_user, Message).resolve
-      .where(enrollment_id: @enrollment.id)
+      .where(message_params)
   end
 
   def set_message
@@ -58,6 +52,6 @@ class MessagesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def message_params
-    params.require(:message).permit(:enrollment_id, :content, :user_id)
+    params.fetch(:message, {}).permit(:subscription_id, :content, :user_id)
   end
 end

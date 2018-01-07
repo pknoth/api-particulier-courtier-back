@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class Message < ApplicationRecord
-  belongs_to :enrollment
-
   validates_presence_of :content
 
+  belongs_to :subscription, optional: true
   resourcify
 
   def sender

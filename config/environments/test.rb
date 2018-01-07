@@ -45,10 +45,11 @@ Rails.application.configure do
     info: { email: 'user@user.user' },
     uid: '123545'
   )
-  OmniAuth.config.mock_auth[:dgfip] = OmniAuth::AuthHash.new(
+  OmniAuth.config.mock_auth[:resource_provider] = OmniAuth::AuthHash.new(
     credentials: { token: 'test' },
     info: { email: 'user@user.user' },
     provider: 'dgfip',
-    uid: '123545'
+    uid: '123545',
+    scopes: %w[ResourceProvider dgfip]
   )
 end

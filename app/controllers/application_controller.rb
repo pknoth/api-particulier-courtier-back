@@ -31,13 +31,15 @@ class ApplicationController < ActionController::Base
   def authenticate!
     @current_user ||= User.find_by(uid: oauth_user['id'].to_s)
     raise Dgfip::AccessDenied, 'User not found' unless current_user
+    @current_user.scopes ||= oauth_user['scopes']
+    @current_user.oauth_roles ||= oauth_user['roles']
   end
 
   def oauth_user
     token = authorization_header.gsub(/Bearer /, '')
 
     if Rails.env.docker? || Rails.env.production?
-      { 'id' => token }
+      { 'id' => token, 'scopes' => ['enrollments'], 'roles' => ['dgfip'] }
     else
       Rails.cache.fetch(token, expires_in: 10.minutes) do
         client.me(token)

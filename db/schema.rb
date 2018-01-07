@@ -10,37 +10,67 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122154228) do
+ActiveRecord::Schema.define(version: 20180105080657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.integer "subscription_id"
+    t.integer "field_id"
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "document_types", force: :cascade do |t|
+    t.string "name"
+    t.string "human_name"
+    t.integer "enrollment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "documents", force: :cascade do |t|
     t.string "attachment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "enrollment_id"
-    t.string "type"
+    t.integer "document_type_id"
     t.boolean "archive", default: false
+    t.integer "subscription_id"
   end
 
   create_table "enrollments", force: :cascade do |t|
-    t.json "service_provider"
     t.json "scopes"
-    t.json "legal_basis"
-    t.json "service_description"
-    t.boolean "agreement"
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "applicant"
+    t.string "service_provider_type"
+    t.string "name"
+    t.string "human_name"
+    t.text "description"
+    t.text "document_types", array: true
+  end
+
+  create_table "fields", force: :cascade do |t|
+    t.string "type"
+    t.integer "fieldable_id"
+    t.string "name"
+    t.string "fieldable_type"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "required"
+    t.string "human_name"
+    t.string "label"
   end
 
   create_table "messages", force: :cascade do |t|
-    t.integer "enrollment_id"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subscription_id"
   end
 
   create_table "roles", id: :serial, force: :cascade do |t|
@@ -51,6 +81,35 @@ ActiveRecord::Schema.define(version: 20171122154228) do
     t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
+  end
+
+  create_table "scope_subscriptions", force: :cascade do |t|
+    t.integer "subscription_id"
+    t.integer "scope_id"
+    t.boolean "selected"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "scopes", force: :cascade do |t|
+    t.string "name"
+    t.string "human_name"
+    t.integer "enrollment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "service_providers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "enrollment_id"
+    t.string "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "service_provider"
   end
 
   create_table "users", force: :cascade do |t|

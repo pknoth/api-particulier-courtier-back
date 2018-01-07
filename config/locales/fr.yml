@@ -10,3 +10,11 @@ fr:
       housing_tax: Données de taxe d'habitation principale
       total_gross_income: Revenu Brut Global / Déficit Brut Global
       world_income: Montant des revenus mondiaux
+  models:
+    subscription:
+      event:
+        fill_application: La demande a été initialisée
+        complete_application: votre dossier a été complèté
+        approve_application: votre dossier a été approuvé
+        sign_convention: votre application est prête pour la mise en production
+        deploy: Votre application est déployée

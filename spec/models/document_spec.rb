@@ -3,11 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Document, type: :model do
-  let(:enrollment) { FactoryGirl.create(:enrollment) }
+  it 'can be linked to a document_type' do
+    document = FactoryGirl.create(:document, attachment_type: 'Document::CNILVoucher')
 
-  it 'can be a Document::LegalBasis' do
-    document = FactoryGirl.create(:document, type: 'Document::LegalBasis')
-
-    expect(Document.find(document.id)).to be_a(Document::LegalBasis)
+    expect(Document.find(document.id).document_type.name).to eq('Document::CNILVoucher')
   end
 end

@@ -17,12 +17,12 @@ RSpec.describe 'Messages', type: :request do
           'Authorization' => bearer,
           'User-Agent' => 'Faraday v0.12.1'
         }
-      ).to_return(status: 200, body: "{\"id\": #{uid}}", headers: { 'Content-Type' => 'application/json' })
+      ).to_return(status: 200, body: "{\"id\": #{uid},\"scopes\":[\"dgfip\"]}", headers: { 'Content-Type' => 'application/json' })
   end
 
   describe 'GET /messages' do
     it 'works! (now write some real specs)' do
-      get enrollment_messages_path(enrollment_id: enrollment.id), headers: { 'Authorization' => bearer }
+      get messages_path, headers: { 'Authorization' => bearer }
       expect(response).to have_http_status(200)
     end
   end

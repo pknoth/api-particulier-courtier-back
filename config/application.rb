@@ -26,15 +26,9 @@ module DgfipContractualization
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    config.autoload_paths.push Rails.root.join('lib')
 
     config.i18n.default_locale = :fr
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', headers: :any, methods: %i[get post put patch options], credentials: false
-      end
-    end
 
     config.public_file_server.enabled = false
   end

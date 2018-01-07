@@ -7,11 +7,11 @@ module Users
     def oauth2_callback
       token = request.env['omniauth.auth']['credentials'].token
       session[:token] = token
-      @current_user = User.from_dgfip_omniauth(request.env['omniauth.auth'])
+      @current_user = User.from_resource_provider_omniauth(request.env['omniauth.auth'])
       redirect_to "#{FRONT_CONFIG['callback_url']}/#{token}"
     end
 
-    alias dgfip oauth2_callback
+    alias resource_provider oauth2_callback
     alias france_connect oauth2_callback
 
     # TODO: a beautifull page
@@ -31,7 +31,7 @@ module Users
     protected
 
     def after_omniauth_failure_path_for(_scope)
-      users_access_denied_path # TODO: make a beatifull page
+      render :failure
     end
   end
 end
